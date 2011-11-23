@@ -6,4 +6,3 @@ module.exports = (robot) ->
 
   robot.respond /where do you live/i, (msg) ->
     msg.send "I live at https://github.com/mattoraptor/zbot"
-
