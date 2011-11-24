@@ -8,6 +8,6 @@ module.exports = (robot) ->
 		sender = msg.message.user.name
 		for roomId in process.env.HUBOT_CAMPFIRE_ROOMS.split(",")
 			do (roomId) ->
-				msg.send "#{roomId} == #{currentRoom}" if roomId == currentRoom
 				msg.message.user.room = roomId
+				msg.send "#{roomId} == #{currentRoom}"
 				msg.send "[#{sender}] #{msg.match[2]} (reply in https://zssd.campfirenow.com/room/#{currentRoom})"
