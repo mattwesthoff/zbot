@@ -11,15 +11,15 @@ module.exports = (robot) ->
 		domain = process.env.HUBOT_JIRA_DOMAIN
 		
 		error = "%s is not configured in your environment"
-		unless username
+		unless username?
+			msg.send "no username"
 			msg.send (error % "HUBOT_JIRA_USER")
 			return
-		unless password
+		unless password?
 			msg.send (error % "HUBOT_JIRA_PASSWORD")
 			return
-		unless domain
+		unless domain?
 			msg.send (error % "HUBOT_JIRA_DOMAIN")
 			return
 		
 		url = "https://#{domain}.jira.com/rest/api/latest/search"
-		msg.send "#{username} - #{domain}"
