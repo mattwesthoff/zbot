@@ -9,5 +9,5 @@ module.exports = (robot) ->
 		for roomId in process.env.HUBOT_CAMPFIRE_ROOMS.split(",")
 			do (roomId) ->
 				msg.message.user.room = roomId
-				msg.send "#{roomId} == #{currentRoom}" if parseInt(roomId) is parseInt(currentRoom)
-				msg.send "[#{sender}] #{msg.match[2]} (reply in https://zssd.campfirenow.com/room/#{currentRoom})"
+				broadcast = "[#{sender}] #{msg.match[2]} (reply in https://zssd.campfirenow.com/room/#{currentRoom})"
+				msg.send broadcast unless parseInt(roomId) is parseInt(currentRoom)
