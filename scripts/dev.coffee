@@ -8,6 +8,7 @@ module.exports = (robot) ->
     msg.send "I live at https://github.com/mattoraptor/zbot"
     
   robot.hear /^can you hear me/i, (msg) ->
-    msg.send 'no message!' if not msg.message?
     msg.send 'there is a user!' if msg.message?.user?
+    usermsg = "the user is #{msg.message.user}"
+    msg.send usermsg
     msg.send 'cool'
