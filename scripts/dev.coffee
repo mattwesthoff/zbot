@@ -8,4 +8,4 @@ module.exports = (robot) ->
     msg.send "I live at https://github.com/mattoraptor/zbot"
     
   robot.hear /^can you hear me/i, (msg) ->
-    msg.send "I hear you!"
+    msg.send msg.user
