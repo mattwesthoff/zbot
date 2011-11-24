@@ -4,6 +4,7 @@
 
 module.exports = (robot) ->
   robot.respond /(?:(allhands|broadcast)) (.+)/i, (msg) ->
+    currentRoom = msg.message.user.room
     for roomId in process.env.HUBOT_CAMPFIRE_ROOMS.split(",")
       do (roomId) ->
         msg.message.user.room = roomId
