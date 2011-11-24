@@ -9,6 +9,6 @@ module.exports = (robot) ->
     
   robot.hear /^can you hear me/i, (msg) ->
     msg.send 'there is a user!' if msg.message?.user?
-    usermsg = "the user is #{msg.message.user}"
+    usermsg = "the user is #{msg.message.user.name} in #{msg.message.user.room}"
     msg.send usermsg
     msg.send 'cool'
