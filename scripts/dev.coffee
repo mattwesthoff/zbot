@@ -11,4 +11,5 @@ module.exports = (robot) ->
     msg.send "the user is #{msg.message.user.name} in #{msg.message.user.room}" 
     for roomId in process.env.HUBOT_CAMPFIRE_ROOMS.split(",")
       do (roomId) ->
-        msg.send "I'm in #{roomId}"
+        newuser.room = roomId
+        msg.robot.adapter.send newuser "I hear #{msg.message.user.name}"
