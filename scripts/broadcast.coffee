@@ -4,4 +4,4 @@
 
 module.exports = (robot) ->
   robot.respond /(?:(allhands|broadcast)) (.+)/i, (msg) ->
-    msg.reply msg.match[1]
+    msg.reply msg.match[2]
