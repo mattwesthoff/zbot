@@ -8,6 +8,5 @@ module.exports = (robot) ->
     msg.send "I live at https://github.com/mattoraptor/zbot"
     
   robot.hear /^can you hear me/i, (msg) ->
-    for key, value in msg
-	msg.send key
+    msg.send key for key in msg
     msg.send 'cool'
