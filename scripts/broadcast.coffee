@@ -5,6 +5,7 @@
 module.exports = (robot) ->
   robot.respond /(?:(allhands|broadcast)) (.+)/i, (msg) ->
     currentRoom = msg.message.user.room
+    msg.send 'no adapter??' unless msg.robot.adapter?
     msg.send 'oh yeah, we have a bot' if msg.robot.adapter?.bot?
     for roomId in process.env.HUBOT_CAMPFIRE_ROOMS.split(",")
       do (roomId) ->
