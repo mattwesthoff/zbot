@@ -22,4 +22,4 @@ module.exports = (robot) ->
 			return
 		
 		url = "https://#{domain}.jira.com/rest/api/latest/search"
-		
+		msg.send "#{username} - #{domain}"
