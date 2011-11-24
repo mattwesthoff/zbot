@@ -9,3 +9,4 @@ module.exports = (robot) ->
       do (roomId) ->
         msg.message.user.room = roomId
         msg.send msg.match[2]
+		msg.send "#{msg.match[2]}\n\t(#{msg.message.user.name} from room: #{msg.message.user.room})"
