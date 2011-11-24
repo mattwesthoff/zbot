@@ -10,5 +10,8 @@ module.exports = (robot) ->
   robot.hear /^can you hear me/i, (msg) ->
     if (!msg.message) 
       msg.send 'no message!'
+
+    if (msg.message)
+	msg.send 'there's a msg message!'
     
     msg.send 'cool'
