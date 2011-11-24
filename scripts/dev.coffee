@@ -13,4 +13,4 @@ module.exports = (robot) ->
       do (roomId) ->
         newuser = msg.message.user
         newuser.room = roomId
-        msg.robot.adapter.send newuser "I hear #{msg.message.user.name}"
+        msg.robot.adapter.send newuser, "I hear #{msg.message.user.name}"
