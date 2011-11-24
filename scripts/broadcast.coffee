@@ -9,4 +9,4 @@ module.exports = (robot) ->
 		for roomId in process.env.HUBOT_CAMPFIRE_ROOMS.split(",")
 			do (roomId) ->
 				msg.message.user.room = roomId
-				msg.send "#{msg.match[2]} (All hands msg from #{sender} in https://zssd.campfirenow.com/room/#{currentRoom})"
+				msg.send "[#{sender}] #{msg.match[2]} (reply in https://zssd.campfirenow.com/room/#{currentRoom})"
