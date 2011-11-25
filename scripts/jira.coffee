@@ -28,14 +28,16 @@ module.exports = (robot) ->
 			if issue.total? and (parseInt(issue.total) is 0)
 				msg.send "Couldn't find the JIRA issue"
 				return
-			
 			msg.send "#{msg.match[1]}: #{issue.fields.summary.value}"
 	
 	robot.respond /jira me(?: issues where)? (.+)/i, (msg) ->
-		jql = msg.match[1]
+		msg.send msg.match[1]
+		username = process.env.HUBOT_JIRA_USER
+		password = process.env.HUBOT_JIRA_PASSWORD
+		domain = process.env.HUBOT_JIRA_DOMAIN
 		url = "http://#{domain}.onjira.com/rest/api/latest/search"
 		auth = "Basic " + new Buffer(username + ":" + password).toString('base64')
-		queryString = "jql=#{jql}"
+		queryString = "jql=#{msg.match[1]}"
 		getJSON msg, url, queryString, auth, (err, results) ->
 			if err
 				msg.send "error trying to access JIRA"
