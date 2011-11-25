@@ -49,7 +49,7 @@ class JiraHandler
 				return
 			@issueList.push( {key: "testIssue", summary: "a fake summary"} )
 			for issue in results.issues
-				@getJSON issue.self, null, (err, details) =>
+				@getJSON issue.self, null, (err, details) ->
 					if err
 						@issueList.push( {key: "error", summary: "couldn't get issue details from JIRA"} )
 						return
