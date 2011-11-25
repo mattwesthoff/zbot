@@ -53,13 +53,10 @@ class JiraHandler
 					if err
 						@issueList.push( {key: "error", summary: "couldn't get issue details from JIRA"} )
 						return
-					@msg.send "directoutput: #{details.key}: #{details.fields.summary.value}"
 					unless details.key?
 						@msg.send "didn't get details for an issue"
 						return
 					@issueList.push( {key: details.key, summary: details.fields.summary.value} )
-					
-			@msg.send "output list length: #{@issueList.length}"
 			if @issueList.length > 0
 				output = (@issueList.map (i) -> "#{i.key}: #{i.summary}").join("\n")
 				@msg.send output
