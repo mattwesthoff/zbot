@@ -29,39 +29,39 @@ class JiraHandler
 		url = "http://#{domain}.onjira.com/rest/api/latest/issue/#{id.toUpperCase()}"
 		@getJSON url, null, (err, issue) ->
 			if err
-				msg.send "error trying to access JIRA"
+				@msg.send "error trying to access JIRA"
 				return
 			unless issue.fields?
-				msg.send "Couldn't find the JIRA issue #{msg.match[1]}"
+				@msg.send "Couldn't find the JIRA issue #{msg.match[1]}"
 				return
-			msg.send "#{msg.match[1]}: #{issue.fields.summary.value}"
+			@msg.send "#{msg.match[1]}: #{issue.fields.summary.value}"
 	
 	getIssues: (jql) ->
 		url = "http://#{domain}.onjira.com/rest/api/latest/search"
 		@getJSON url, jql, (err, results) ->
 			if err
-				msg.send "error trying to access JIRA"
+				@msg.send "error trying to access JIRA"
 				return
 			unless results.issues?
-				msg.send "Couldn't find any issues"
+				@msg.send "Couldn't find any issues"
 				return
-			issueList = []
-			issueList.push( {key: "testIssue", summary: "a fake summary"} )
+			@issueList = []
+			@issueList.push( {key: "testIssue", summary: "a fake summary"} )
 			for issue in results.issues
-				getJSON msg, issue.self, null, auth, (err, details) =>
+				@getJSON issue.self, null, (err, details) =>
 					if err
-						issueList.push( {key: "error", summary: "couldn't get issue details from JIRA"} )
+						@issueList.push( {key: "error", summary: "couldn't get issue details from JIRA"} )
 						return
-					msg.send "directoutput: #{details.key}: #{details.fields.summary.value}"
+					@msg.send "directoutput: #{details.key}: #{details.fields.summary.value}"
 					unless details.key?
-						msg.send "didn't get details for an issue"
+						@msg.send "didn't get details for an issue"
 						return
-					issueList.push( {key: details.key, summary: details.fields.summary.value} )
+					@issueList.push( {key: details.key, summary: details.fields.summary.value} )
 					
-			msg.send "output list length: #{issueList.length}"
-			if issueList.length > 0
-				output = (issueList.map (i) -> "#{i.key}: #{i.summary}").join("\n")
-				msg.send output
+			@msg.send "output list length: #{issueList.length}"
+			if @issueList.length > 0
+				output = (@issueList.map (i) -> "#{i.key}: #{i.summary}").join("\n")
+				@msg.send output
 			
 module.exports = (robot) ->
 	robot.hear /\b([A-Za-z]{3,5}-[\d]+)/i, (msg) ->
