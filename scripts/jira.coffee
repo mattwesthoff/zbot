@@ -9,12 +9,18 @@ module.exports = (robot) ->
 		missing_config_error = "%s setting missing from env config!"
 		unless process.env.HUBOT_JIRA_USER?
 			msg.send (missing_config_error % "HUBOT_JIRA_USER")
+		unless process.env.HUBOT_JIRA_PASSWORD?
+			msg.send (missing_config_error % "HUBOT_JIRA_PASSWORD")
+		unless process.env.HUBOT_JIRA_DOMAIN?
+			msg.send (missing_config_error % "HUBOT_JIRA_DOMAIN")
 		
 		username = process.env.HUBOT_JIRA_USER
 		password = process.env.HUBOT_JIRA_PASSWORD
 		domain = process.env.HUBOT_JIRA_DOMAIN
+		
 		url = "http://#{domain}.onjira.com/rest/api/latest/issue/#{msg.match[1]}"
 		auth = "Basic " + new Buffer(username + ":" + password).toString('base64')
+		
 		getJSON msg, url, "", auth, (err, json) ->
 			if err
 				msg.send "error trying to access JIRA"
@@ -22,10 +28,9 @@ module.exports = (robot) ->
 			if json.total? and (parseInt(json.total) is 0)
 				msg.send "Couldn't find the JIRA issue"
 				return
-			msg.send "Found the JIRA issue"
-		
-		msg.send "that looks like a JIRA case, here's a link: http://zsassociates.onjira.com/browse/#{msg.match[1]}" 
-		
+			
+			msg.send "#{msg.match[1]}:#{json.fields.summary.value}"
+			
 getJSON = (msg, url, query, auth, callback) ->
 	msg.http(url)
 		.header('Authorization', auth)
