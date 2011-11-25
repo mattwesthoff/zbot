@@ -47,13 +47,12 @@ module.exports = (robot) ->
 			msg.send "Found #{results.total} issues that matched your query:"
 			issueList = []
 			for issue in results.issues
-				msg.send issue.self
-				getJSON msg, issue.self, "", auth, (err, details) ->
+				getJSON msg, issue.self, null, auth, (err, details) ->
 					if err
 						msg.send "error getting issue details from JIRA"
 						return
 					issueList.push( {key: details.key, summary: details.fields.summary.value} )
-			if issueList? and issueList.length isnt 0
+			if issueList.length > 0
 				output = (issueList.map (i) -> "#{i.key}: #{i.summary}").join("\n")
 				msg.send output
 				
