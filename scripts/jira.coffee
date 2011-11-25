@@ -5,6 +5,11 @@
 
 module.exports = (robot) ->
 	robot.hear /([A-Za-z]{3}-\d*)/i, (msg) ->
+		
+		missing_config_error = "%s setting missing from env config!"
+		unless process.env.HUBOT_JIRA_USER?
+			msg.send (missing_config_error % "HUBOT_JIRA_USER")
+		
 		username = process.env.HUBOT_JIRA_USER
 		password = process.env.HUBOT_JIRA_PASSWORD
 		domain = process.env.HUBOT_JIRA_DOMAIN
