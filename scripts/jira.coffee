@@ -25,7 +25,7 @@ module.exports = (robot) ->
 			if err
 				msg.send "error trying to access JIRA"
 				return
-			if not issue.total? or (parseInt(issue.total) is 0)
+			unless issues.fields?
 				msg.send "Couldn't find the JIRA issue"
 				return
 			msg.send "#{msg.match[1]}: #{issue.fields.summary.value}"
@@ -41,7 +41,7 @@ module.exports = (robot) ->
 			if err
 				msg.send "error trying to access JIRA"
 				return
-			if not results.total? or (parseInt(results.total) is 0)
+			unless results.issues?
 				msg.send "Couldn't find any issues"
 				return
 			msg.send "Found #{results.total} issues that matched your query:"
