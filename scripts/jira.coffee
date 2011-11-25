@@ -4,7 +4,7 @@
 # jcm-1145: "a case about things and stuff" - https://blah
 
 module.exports = (robot) ->
-	robot.hear /([A-Za-z]{3}-\d*)/i, (msg) ->
+	robot.hear /([A-Za-z]{3}-[\d]+)/i, (msg) ->
 		
 		missing_config_error = "%s setting missing from env config!"
 		unless process.env.HUBOT_JIRA_USER?
@@ -26,7 +26,7 @@ module.exports = (robot) ->
 				msg.send "error trying to access JIRA"
 				return
 			unless issue.fields?
-				msg.send "Couldn't find the JIRA issue"
+				msg.send "Couldn't find the JIRA issue #{msg.match[1]}"
 				return
 			msg.send "#{msg.match[1]}: #{issue.fields.summary.value}"
 	
