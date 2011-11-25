@@ -3,6 +3,8 @@
 # "blah blah jcm-1145 "
 # jcm-1145: "a case about things and stuff" - https://blah
 
+issueList = []
+
 module.exports = (robot) ->
 	robot.hear /\b([A-Za-z]{3,5}-[\d]+)/i, (msg) ->
 		
@@ -51,10 +53,8 @@ module.exports = (robot) ->
 						return
 					
 					msg.send "directoutput: #{details.key}: #{details.fields.summary.value}"
-					msg.reply "#{details.key?}  #{details.fields?.summary?.value?}"
-					issueList.push( {key: details.key, summary: details.fields.summary.value} )
 					
-					unless details.key? and details.fields?.summary?.value?
+					unless details.key?
 						msg.send "didn't get details for an issue"
 						return
 					
