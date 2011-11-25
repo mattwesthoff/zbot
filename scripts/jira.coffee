@@ -59,7 +59,7 @@ class JiraHandler
 						return
 					@issueList.push( {key: details.key, summary: details.fields.summary.value} )
 					
-			@msg.send "output list length: #{issueList.length}"
+			@msg.send "output list length: #{@issueList.length}"
 			if @issueList.length > 0
 				output = (@issueList.map (i) -> "#{i.key}: #{i.summary}").join("\n")
 				@msg.send output
