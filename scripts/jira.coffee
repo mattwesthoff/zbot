@@ -54,6 +54,7 @@ module.exports = (robot) ->
 					issueList.push( {key: details.key, summary: details.fields.summary.value} )
 			if issueList? and issueList.length isnt 0
 				output = (issueList.map (i) -> "#{i.key}: #{i.summary}").join("\n")
+				msg.send output
 				
 			
 getJSON = (msg, url, query, auth, callback) ->
