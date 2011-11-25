@@ -25,7 +25,7 @@ module.exports = (robot) ->
 			if err
 				msg.send "error trying to access JIRA"
 				return
-			unless issues.fields?
+			unless issue.fields?
 				msg.send "Couldn't find the JIRA issue"
 				return
 			msg.send "#{msg.match[1]}: #{issue.fields.summary.value}"
