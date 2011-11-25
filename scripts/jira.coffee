@@ -43,7 +43,7 @@ module.exports = (robot) ->
 			if results.total? and (parseInt(results.total) is 0)
 				msg.send "Couldn't find any issues"
 				return
-			msg.send results
+			msg.send "I got some results"
 			
 getJSON = (msg, url, query, auth, callback) ->
 	msg.http(url)
