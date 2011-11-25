@@ -42,7 +42,7 @@ module.exports = (robot) ->
 			if err
 				msg.send "error trying to access JIRA"
 				return
-			if not results.issues?
+			unless results?
 				msg.send "Couldn't find any issues"
 				return
 			msg.send "Found #{results.total} issues that matched your query:"
