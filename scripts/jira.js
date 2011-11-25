@@ -24,7 +24,7 @@
           msg.send("error trying to access JIRA");
           return;
         }
-        if ((issue.total != null) && (parseInt(issue.total) === 0)) {
+        if (issues.fields == null) {
           msg.send("Couldn't find the JIRA issue");
           return;
         }
@@ -45,7 +45,7 @@
           msg.send("error trying to access JIRA");
           return;
         }
-        if ((results.total != null) && (parseInt(results.total) === 0)) {
+        if (results.issues == null) {
           msg.send("Couldn't find any issues");
           return;
         }
@@ -54,6 +54,7 @@
         _ref = results.issues;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           issue = _ref[_i];
+          msg.send(issue.self);
           getJSON(msg, issue.self, "", auth, function(err, details) {
             if (err) {
               msg.send("error getting issue details from JIRA");
