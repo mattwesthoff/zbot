@@ -30,7 +30,7 @@ module.exports = (robot) ->
 				return
 			msg.send "#{msg.match[1]}: #{issue.fields.summary.value}"
 	
-	robot.respond /jira me(?: issues where)? (.+)/i, (msg) ->
+	robot.respond /jira me(?: issues where)? (.+)$/i, (msg) ->
 		username = process.env.HUBOT_JIRA_USER
 		password = process.env.HUBOT_JIRA_PASSWORD
 		domain = process.env.HUBOT_JIRA_DOMAIN
