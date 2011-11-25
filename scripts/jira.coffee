@@ -4,7 +4,7 @@
 # jcm-1145: "a case about things and stuff" - https://blah
 
 module.exports = (robot) ->
-	robot.hear /[ ]?([A-Za-z]{3,5}-[\d]+)/i, (msg) ->
+	robot.hear /\b([A-Za-z]{3,5}-[\d]+)/i, (msg) ->
 		
 		missing_config_error = "%s setting missing from env config!"
 		unless process.env.HUBOT_JIRA_USER?
