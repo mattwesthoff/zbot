@@ -38,6 +38,8 @@ class JiraHandler
 	
 	getIssues: (jql) ->
 		url = "http://#{@domain}.onjira.com/rest/api/latest/search"
+		@issueList = []
+		@issueList.push( {key: "testIssueOut", summary: "a fake summary out"} )
 		@getJSON url, jql, (err, results) =>
 			if err
 				@msg.send "error trying to access JIRA"
@@ -45,7 +47,6 @@ class JiraHandler
 			unless results.issues?
 				@msg.send "Couldn't find any issues"
 				return
-			@issueList = []
 			@issueList.push( {key: "testIssue", summary: "a fake summary"} )
 			for issue in results.issues
 				@getJSON issue.self, null, (err, details) =>
@@ -56,9 +57,9 @@ class JiraHandler
 						@msg.send "didn't get details for an issue"
 						return
 					@issueList.push( {key: details.key, summary: details.fields.summary.value} )
-			if @issueList.length > 0
-				output = (@issueList.map (i) -> "#{i.key}: #{i.summary}").join("\n")
-				@msg.send output
+		if @issueList.length > 0
+			output = (@issueList.map (i) -> "#{i.key}: #{i.summary}").join("\n")
+			@msg.send output
 			
 module.exports = (robot) ->
 	robot.hear /\b([A-Za-z]{3,5}-[\d]+)/i, (msg) ->
