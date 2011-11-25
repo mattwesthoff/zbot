@@ -65,6 +65,7 @@ class JiraHandler
 			
 module.exports = (robot) ->
 	robot.hear /\b([A-Za-z]{3,5}-[\d]+)/i, (msg) ->
+		msg.send "#{msg.match[1]}"
 		handler = new JiraHandler msg
 		handler.getIssue msg.match[1]
 	
