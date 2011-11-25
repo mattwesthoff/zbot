@@ -42,7 +42,6 @@ module.exports = (robot) ->
 			if err
 				msg.send "error trying to access JIRA"
 				return
-			unless results
 			if not results.issues?
 				msg.send "Couldn't find any issues"
 				return
