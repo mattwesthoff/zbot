@@ -18,7 +18,7 @@ module.exports = (robot) ->
 		password = process.env.HUBOT_JIRA_PASSWORD
 		domain = process.env.HUBOT_JIRA_DOMAIN
 		
-		url = "http://#{domain}.onjira.com/rest/api/latest/issue/#{msg.match[1]}"
+		url = "http://#{domain}.onjira.com/rest/api/latest/issue/#{(msg.match[1]).toUpperCase()}"
 		auth = "Basic " + new Buffer(username + ":" + password).toString('base64')
 		
 		getJSON msg, url, "", auth, (err, json) ->
@@ -29,8 +29,12 @@ module.exports = (robot) ->
 				msg.send "Couldn't find the JIRA issue"
 				return
 			
-			msg.send "#{msg.match[1]}:#{json.fields.summary.value}"
-			
+			msg.send "#{msg.match[1]}: #{json.fields.summary.value}"
+	
+	robot.respond /jira me(?: issues where)? (.+)/i, (msg) ->
+		jql = msg.match[1]
+		msg.send "I'm going to search for jql #{jql}"
+		
 getJSON = (msg, url, query, auth, callback) ->
 	msg.http(url)
 		.header('Authorization', auth)
