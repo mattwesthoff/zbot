@@ -35,7 +35,8 @@ module.exports = (robot) ->
 		jql = msg.match[1]
 		url = "http://#{domain}.onjira.com/rest/api/latest/search"
 		auth = "Basic " + new Buffer(username + ":" + password).toString('base64')
-		getJSON msg, url, jql, auth, (err, results) ->
+		queryString = "jql=#{jql}"
+		getJSON msg, url, queryString, auth, (err, results) ->
 			if err
 				msg.send "error trying to access JIRA"
 				return
