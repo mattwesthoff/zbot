@@ -3,9 +3,8 @@
 # "blah blah jcm-1145 "
 # jcm-1145: "a case about things and stuff" - https://blah
 
-module.exports = (robot) ->
-	robot.hear /\b([A-Za-z]{3,5}-[\d]+)/i, (msg) ->
-		
+class JiraHandler
+	constuctor: (@msg) ->
 		missing_config_error = "%s setting missing from env config!"
 		unless process.env.HUBOT_JIRA_USER?
 			msg.send (missing_config_error % "HUBOT_JIRA_USER")
@@ -13,15 +12,22 @@ module.exports = (robot) ->
 			msg.send (missing_config_error % "HUBOT_JIRA_PASSWORD")
 		unless process.env.HUBOT_JIRA_DOMAIN?
 			msg.send (missing_config_error % "HUBOT_JIRA_DOMAIN")
+			
+		@username = process.env.HUBOT_JIRA_USER
+		@password = process.env.HUBOT_JIRA_PASSWORD
+		@domain = process.env.HUBOT_JIRA_DOMAIN
+		@auth = "Basic " + new Buffer(@username + ":" + @password).toString('base64')
 		
-		username = process.env.HUBOT_JIRA_USER
-		password = process.env.HUBOT_JIRA_PASSWORD
-		domain = process.env.HUBOT_JIRA_DOMAIN
-		
-		url = "http://#{domain}.onjira.com/rest/api/latest/issue/#{(msg.match[1]).toUpperCase()}"
-		auth = "Basic " + new Buffer(username + ":" + password).toString('base64')
-		
-		getJSON msg, url, "", auth, (err, issue) ->
+	getJSON: (url, query, callback) ->
+		@msg.http(url)
+			.header('Authorization', @auth)
+			.query(jql: query)
+			.get() (err, res, body) ->
+				callback(err, JSON.parse(body))
+	
+	getIssue: (id) ->
+		url = "http://#{domain}.onjira.com/rest/api/latest/issue/#{id.toUpperCase()}"
+		@getJSON url, null, (err, issue) ->
 			if err
 				msg.send "error trying to access JIRA"
 				return
@@ -30,44 +36,38 @@ module.exports = (robot) ->
 				return
 			msg.send "#{msg.match[1]}: #{issue.fields.summary.value}"
 	
-	robot.respond /jira me(?: issues where)? (.+)$/i, (msg) ->
-		username = process.env.HUBOT_JIRA_USER
-		password = process.env.HUBOT_JIRA_PASSWORD
-		domain = process.env.HUBOT_JIRA_DOMAIN
+	getIssues: (jql) ->
 		url = "http://#{domain}.onjira.com/rest/api/latest/search"
-		auth = "Basic " + new Buffer(username + ":" + password).toString('base64')
-		getJSON msg, url, msg.match[1], auth, (err, results) ->
+		@getJSON url, jql, (err, results) ->
 			if err
 				msg.send "error trying to access JIRA"
 				return
 			unless results.issues?
 				msg.send "Couldn't find any issues"
 				return
-			@issueList = []
-			@issueList.push( {key: "testIssue", summary: "a fake summary"} )
+			issueList = []
+			issueList.push( {key: "testIssue", summary: "a fake summary"} )
 			for issue in results.issues
 				getJSON msg, issue.self, null, auth, (err, details) =>
 					if err
-						@issueList.push( {key: "error", summary: "couldn't get issue details from JIRA"} )
+						issueList.push( {key: "error", summary: "couldn't get issue details from JIRA"} )
 						return
-					
 					msg.send "directoutput: #{details.key}: #{details.fields.summary.value}"
-					
 					unless details.key?
 						msg.send "didn't get details for an issue"
 						return
-					
-					@issueList.push( {key: details.key, summary: details.fields.summary.value} )
+					issueList.push( {key: details.key, summary: details.fields.summary.value} )
 					
 			msg.send "output list length: #{issueList.length}"
-			if @issueList.length > 0
-				output = (@issueList.map (i) -> "#{i.key}: #{i.summary}").join("\n")
+			if issueList.length > 0
+				output = (issueList.map (i) -> "#{i.key}: #{i.summary}").join("\n")
 				msg.send output
-				
 			
-getJSON = (msg, url, query, auth, callback) ->
-	msg.http(url)
-		.header('Authorization', auth)
-		.query(jql: query)
-		.get() (err, res, body) ->
-			callback(err, JSON.parse(body))
+module.exports = (robot) ->
+	robot.hear /\b([A-Za-z]{3,5}-[\d]+)/i, (msg) ->
+		handler = new JiraHandler(msg)
+		handler.getIssue msg.match[1]
+	
+	robot.respond /jira me(?: issues where)? (.+)$/i, (msg) ->
+		handler = new JiraHandler(msg)
+		handler.getIssues msg.match[1]
