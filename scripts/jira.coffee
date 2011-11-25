@@ -3,8 +3,6 @@
 # "blah blah jcm-1145 "
 # jcm-1145: "a case about things and stuff" - https://blah
 
-issueList = []
-
 module.exports = (robot) ->
 	robot.hear /\b([A-Za-z]{3,5}-[\d]+)/i, (msg) ->
 		
@@ -48,7 +46,7 @@ module.exports = (robot) ->
 			issueList = []
 			issueList.push( {key: "testIssue", summary: "a fake summary"} )
 			for issue in results.issues
-				getJSON msg, issue.self, null, auth, (err, details) ->
+				getJSON msg, issue.self, null, auth, (err, details) =>
 					if err
 						issueList.push( {key: "error", summary: "couldn't get issue details from JIRA"} )
 						return
