@@ -36,7 +36,6 @@ module.exports = (robot) ->
 		domain = process.env.HUBOT_JIRA_DOMAIN
 		url = "http://#{domain}.onjira.com/rest/api/latest/search"
 		auth = "Basic " + new Buffer(username + ":" + password).toString('base64')
-		msg.send "#{url}?jql=#{msg.match[1]}"
 		getJSON msg, url, msg.match[1], auth, (err, results) ->
 			if err
 				msg.send "error trying to access JIRA"
