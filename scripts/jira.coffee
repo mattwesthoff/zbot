@@ -50,7 +50,9 @@ module.exports = (robot) ->
 						issueList.push( {key: "error", summary: "couldn't get issue details from JIRA"} )
 						return
 					
-					msg.send "#{details.key}: #{details.fields.summary.value}"
+					msg.send "directoutput: #{details.key}: #{details.fields.summary.value}"
+					msg.reply "#{details.key?}  #{details.fields?.summary?.value?}"
+					issueList.push( {key: details.key, summary: details.fields.summary.value} )
 					
 					unless details.key? and details.fields?.summary?.value?
 						msg.send "didn't get details for an issue"
