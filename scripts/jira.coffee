@@ -44,14 +44,12 @@ module.exports = (robot) ->
 				msg.send "Couldn't find any issues"
 				return
 			issueList = []
-			msg.send "found #{results.total} issues"
 			for issue in results.issues
-				msg.send "issue url: #{issue.self}"
 				getJSON msg, issue.self, null, auth, (err, details) ->
-					msg.send "got details back for an issue"
 					if err
 						issueList.push( {key: "error", summary: "couldn't get issue details from JIRA"} )
-					else if details.key? and details.fields?.summary?.value?
+						return
+					if details.key? and details.fields?.summary?.value?
 						issueList.push( {key: details.key, summary: details.fields.summary.value} )
 					else
 						msg.send "didn't get details, what's going on with that??"
