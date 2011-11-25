@@ -49,11 +49,14 @@ module.exports = (robot) ->
 					if err
 						issueList.push( {key: "error", summary: "couldn't get issue details from JIRA"} )
 						return
-					if details.key? and details.fields?.summary?.value?
-						issueList.push( {key: details.key, summary: details.fields.summary.value} )
-					else
-						msg.send "didn't get details, what's going on with that??"
+					
+					msg.send "#{details.key}: #{details.fields.summary.value}"
+					
+					unless details.key? and details.fields?.summary?.value?
+						msg.send "didn't get details for an issue"
 						return
+					
+					issueList.push( {key: details.key, summary: details.fields.summary.value} )
 			msg.send "output list length: #{issueList.length}"
 			if issueList.length > 0
 				output = (issueList.map (i) -> "#{i.key}: #{i.summary}").join("\n")
