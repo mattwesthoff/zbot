@@ -31,7 +31,6 @@ module.exports = (robot) ->
 			msg.send "#{msg.match[1]}: #{issue.fields.summary.value}"
 	
 	robot.respond /jira me(?: issues where)? (.+)/i, (msg) ->
-		msg.send msg.match[1]
 		username = process.env.HUBOT_JIRA_USER
 		password = process.env.HUBOT_JIRA_PASSWORD
 		domain = process.env.HUBOT_JIRA_DOMAIN
@@ -45,7 +44,17 @@ module.exports = (robot) ->
 			if results.total? and (parseInt(results.total) is 0)
 				msg.send "Couldn't find any issues"
 				return
-			msg.send "I got some results"
+			msg.send "Found #{results.total} issues that matched your query:"
+			issueList = []
+			for issue in results.issues
+				getJSON msg, issue.self, null, auth, (err, details) ->
+					if err
+						msg.send "error getting issue details from JIRA"
+						return
+					issueList.push( {key: details.key, summary: details.fields.summary.value} )
+			if issueList? and issueList.length isnt 0
+				output = (issueList.map (i) -> "#{i.key}: #{i.summary}").join("\n")
+				
 			
 getJSON = (msg, url, query, auth, callback) ->
 	msg.http(url)
