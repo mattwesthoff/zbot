@@ -19,7 +19,6 @@ class JiraHandler
 		@auth = "Basic " + new Buffer(@username + ":" + @password).toString('base64')
 		
 	getJSON: (url, query, callback) ->
-		@msg.reply "gonna go query: #{url}"
 		@msg.http(url)
 			.header('Authorization', @auth)
 			.query(jql: query)
