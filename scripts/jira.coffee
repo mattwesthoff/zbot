@@ -44,6 +44,7 @@ module.exports = (robot) ->
 				msg.send "Couldn't find any issues"
 				return
 			issueList = []
+			msg.send "found #{results.total} issues"
 			for issue in results.issues
 				getJSON msg, issue.self, null, auth, (err, details) ->
 					if err
