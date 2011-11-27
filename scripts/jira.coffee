@@ -57,9 +57,9 @@ class JiraHandler
 						issueList.push {key: issue.key, summary: "couldn't get issue details from JIRA", assignee: "", status: ""}
 					else
 						issueList.push ({key: details.key,
-						summary: details.fields.summary.value, 
-						assignee: details.fields.assignee.value.displayName,
-						status: details.fields.status.value.name
+						summary: details.fields.summary.value?, 
+						assignee: details.fields.assignee.value?.displayName,
+						status: details.fields.status.value?.name
 						})
 					@msg.send ((issueList.map (i) -> "#{i.key}: [#{i.assignee}] - #{i.status} - #{i.summary}").join("\n")) if index is count
 			
