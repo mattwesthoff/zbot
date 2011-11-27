@@ -39,7 +39,6 @@ class JiraHandler
 	
 	getIssues: (jql) ->
 		url = "http://#{@domain}.onjira.com/rest/api/latest/search"
-		@msg.reply "Querying JIRA, give me a moment"
 		@getJSON url, jql, (err, results) =>
 			if err
 				@msg.send "error trying to access JIRA"
@@ -58,14 +57,6 @@ class JiraHandler
 					else
 						issueList.push {key: details.key, summary: details.fields.summary.value}
 					@msg.send ((issueList.map (i) -> "#{i.key}: #{i.summary}").join("\n")) if index is count
-			
-	writeResultsToAdapter: (results) ->
-		@msg.send "issueList.length = #{@issueList.length}"
-		if results.length > 0 
-			resp = (results.map (i) -> "#{i.key}: #{i.summary}").join("\n")
-			@msg.send response
-		else
-			@msg.send "No issues found"
 			
 module.exports = (robot) ->
 	robot.hear /\b([A-Za-z]{3,5}-[\d]+)/i, (msg) ->
