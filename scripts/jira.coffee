@@ -57,18 +57,20 @@ class JiraHandler
 						@issueList.push {key: "error", summary: "didn't get details for an issue"}
 						return
 					@issueList.push {key: details.key, summary: details.fields.summary.value}
+					JiraHandler.currentIssues.push {key: details.key, summary: details.fields.summary.value}
 					@msg.send "now there are #{@issueList.length} issues"
 			@msg.send "In the function out of for loop, length: #{@issueList.length}"
+			@msg.send "In the function out of for loop, proto length: #{JiraHandler.currentIssues.length}"
 			@writeResultsToAdapter @issueList
 			
 	writeResultsToAdapter: (results) ->
-		@msg.send "@issueList is results: #{@issueList is results}"
-		@msg.send "@issueList.length: #{@issueList.length}"
 		if results.length > 0 
 			resp = (results.map (i) -> "#{i.key}: #{i.summary}").join("\n")
 			@msg.send response
 		else
 			@msg.send "No issues found"
+			
+JiraHandler::currentIssues = []
 			
 module.exports = (robot) ->
 	robot.hear /\b([A-Za-z]{3,5}-[\d]+)/i, (msg) ->
