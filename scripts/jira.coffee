@@ -61,6 +61,8 @@ class JiraHandler
 			@writeResultsToAdapter @issueList
 			
 	writeResultsToAdapter: (results) ->
+		@msg.send "#{@issueList is results}"
+		@msg.send "#{@issueList.length}"
 		if results.length > 0 
 			resp = (results.map (i) -> "#{i.key}: #{i.summary}").join("\n")
 			@msg.send response
