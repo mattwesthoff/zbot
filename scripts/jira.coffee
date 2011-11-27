@@ -58,11 +58,12 @@ class JiraHandler
 						return
 					@issueList.push {key: details.key, summary: details.fields.summary.value}
 					@msg.send "now there are #{@issueList.length} issues"
+			@msg.send "In the function out of for loop, length: #{@issueList.length}"
 			@writeResultsToAdapter @issueList
 			
 	writeResultsToAdapter: (results) ->
-		@msg.send "#{@issueList is results}"
-		@msg.send "#{@issueList.length}"
+		@msg.send "@issueList is results: #{@issueList is results}"
+		@msg.send "@issueList.length: #{@issueList.length}"
 		if results.length > 0 
 			resp = (results.map (i) -> "#{i.key}: #{i.summary}").join("\n")
 			@msg.send response
