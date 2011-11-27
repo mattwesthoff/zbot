@@ -47,16 +47,21 @@ class JiraHandler
 				@msg.send "Couldn't find any issues"
 				return
 			issueList = []
+			issueList.push {key: "query", status: jql, assignee: "", status: ""}
 			count = results.issues.length
 			index = 0
 			for issue in results.issues
 				@getJSON issue.self, null, (err, details) =>
 					index++
 					if err
-						issueList.push {key: issue.key, summary: "couldn't get issue details from JIRA"}
+						issueList.push {key: issue.key, summary: "couldn't get issue details from JIRA", assignee: "", status: ""}
 					else
-						issueList.push {key: details.key, summary: details.fields.summary.value}
-					@msg.send ((issueList.map (i) -> "#{i.key}: #{i.summary}").join("\n")) if index is count
+						issueList.push ({key: details.key,
+						summary: details.fields.summary.value, 
+						assignee: details.fields.assignee.value,
+						status: details.fields.status.value
+						})
+					@msg.send ((issueList.map (i) -> "#{i.key}: [#{i.assignee}] - #{i.status} - #{i.summary}").join("\n")) if index is count
 			
 module.exports = (robot) ->
 	robot.hear /\b([A-Za-z]{3,5}-[\d]+)/i, (msg) ->
