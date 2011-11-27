@@ -43,7 +43,7 @@ class JiraHandler
 			if err
 				@msg.send "error trying to access JIRA"
 				return
-			unless results.issues?
+			unless results.issues? and results.total isnt 0
 				@msg.send "Couldn't find any issues"
 				return
 			issueList = []
