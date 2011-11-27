@@ -58,6 +58,7 @@ class JiraHandler
 						issueList.push( {key: "error", summary: "didn't get details for an issue"} )
 						return
 					issueList.push( {key: details.key, summary: details.fields.summary.value} )
+					msg.send "now there are #{issueList.length} issues"
 			@writeResultsToAdapter issueList
 			
 	writeResultsToAdapter: (results) ->
@@ -75,4 +76,3 @@ module.exports = (robot) ->
 	robot.respond /jira me(?: issues where)? (.+)$/i, (msg) ->
 		handler = new JiraHandler msg
 		handler.getIssues msg.match[1]
-		msg.send "got issues: #{issueList.length}"
