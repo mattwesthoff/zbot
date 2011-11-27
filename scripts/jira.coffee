@@ -40,21 +40,25 @@ class JiraHandler
 	getIssues: (jql) ->
 		url = "http://#{@domain}.onjira.com/rest/api/latest/search"
 		@getJSON url, jql, (err, results) =>
+			###
 			if err
 				@msg.send "error trying to access JIRA"
 				return
 			unless results.issues?
 				@msg.send "Couldn't find any issues"
 				return
+			###
 			issueList = []
 			for issue in results.issues
 				@getJSON issue.self, null, (err, details) =>
+					###
 					if err
 						issueList.push {key: "error", summary: "couldn't get issue details from JIRA"}
 						return
 					unless details.key?
 						issueList.push {key: "error", summary: "didn't get details for an issue"}
 						return
+					###
 					issueList.push {key: details.key, summary: details.fields.summary.value}
 			console.log "In the function out of for loop, length: #{issueList.length}"
 		console.log "end of function, #{issueList}"
