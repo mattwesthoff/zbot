@@ -58,7 +58,7 @@ class JiraHandler
 					else
 						line = "#{details.key}: [#{details.fields.assignee.value?.displayName}] #{details.fields.status?.value?.name} '#{details.fields.summary?.value}'"
 						output.push line
-					@msg.send output.join("\n")) if index is count
+					@msg.send output.join("\n") if index is count
 			
 module.exports = (robot) ->
 	robot.hear /\b([A-Za-z]{3,5}-[\d]+)/i, (msg) ->
