@@ -56,11 +56,14 @@ class JiraHandler
 					unless details.key?
 						@issueList.push {key: "error", summary: "didn't get details for an issue"}
 						return
-					@issueList.push {key: details.key, summary: details.fields.summary.value}
+					@addResult {key: details.key, summary: details.fields.summary.value}
 					@msg.send "now there are #{@issueList.length} issues"
 			@msg.send "In the function out of for loop, length: #{@issueList.length}"
 			@writeResultsToAdapter @issueList
 			
+	addResult: (result) ->
+		@issueList.push(result)
+		
 	writeResultsToAdapter: (results) ->
 		if results.length > 0 
 			resp = (results.map (i) -> "#{i.key}: #{i.summary}").join("\n")
