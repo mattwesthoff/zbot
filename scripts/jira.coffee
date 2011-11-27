@@ -39,15 +39,14 @@ class JiraHandler
 	
 	getIssues: (jql) ->
 		url = "http://#{@domain}.onjira.com/rest/api/latest/search"
+		@msg.reply "Querying JIRA, give me a moment"
 		@getJSON url, jql, (err, results) =>
-			###
 			if err
 				@msg.send "error trying to access JIRA"
 				return
 			unless results.issues?
 				@msg.send "Couldn't find any issues"
 				return
-			###
 			issueList = []
 			count = results.issues.length
 			index = 0
@@ -55,11 +54,9 @@ class JiraHandler
 				@getJSON issue.self, null, (err, details) =>
 					index++
 					if err
-						issueList.push {key: "error", summary: "couldn't get issue details from JIRA"}
-					else if not details.key?
-						issueList.push {key: "error", summary: "didn't get details for an issue"}
+						issueList.push {key: issue.key, summary: "couldn't get issue details from JIRA"}
 					else
-						issueList.push({key: details.key, summary: details.fields.summary.value})
+						issueList.push {key: details.key, summary: details.fields.summary.value}
 					@msg.send ((issueList.map (i) -> "#{i.key}: #{i.summary}").join("\n")) if index is count
 			
 	writeResultsToAdapter: (results) ->
