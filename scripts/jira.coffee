@@ -5,8 +5,6 @@
 
 class JiraHandler
 	
-	issueList = []
-	
 	constructor: (@msg) ->
 		missing_config_error = "%s setting missing from env config!"
 		unless process.env.HUBOT_JIRA_USER?
@@ -20,6 +18,7 @@ class JiraHandler
 		@password = process.env.HUBOT_JIRA_PASSWORD
 		@domain = process.env.HUBOT_JIRA_DOMAIN
 		@auth = "Basic " + new Buffer(@username + ":" + @password).toString('base64')
+		@issueList = []
 		
 	getJSON: (url, query, callback) ->
 		@msg.http(url)
@@ -48,18 +47,18 @@ class JiraHandler
 			unless results.issues?
 				@msg.send "Couldn't find any issues"
 				return
-			issueList = []
+			@issueList = []
 			for issue in results.issues
 				@getJSON issue.self, null, (err, details) =>
 					if err
-						issueList.push( {key: "error", summary: "couldn't get issue details from JIRA"} )
+						@issueList.push( {key: "error", summary: "couldn't get issue details from JIRA"} )
 						return
 					unless details.key?
-						issueList.push( {key: "error", summary: "didn't get details for an issue"} )
+						@issueList.push( {key: "error", summary: "didn't get details for an issue"} )
 						return
-					issueList.push( {key: details.key, summary: details.fields.summary.value} )
-					@msg.send "now there are #{issueList.length} issues"
-			@writeResultsToAdapter issueList
+					@issueList.push( {key: details.key, summary: details.fields.summary.value} )
+					@msg.send "now there are #{@issueList.length} issues"
+			@writeResultsToAdapter @issueList
 			
 	writeResultsToAdapter: (results) ->
 		if results.length > 0 
