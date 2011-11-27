@@ -36,7 +36,7 @@ class JiraHandler
 				return
 			@msg.send "#{id}: #{issue.fields.summary.value}"
 	
-	getIssues: (jql) ->
+	getIssues: (jql, issueList) ->
 		url = "http://#{@domain}.onjira.com/rest/api/latest/search"
 		@getJSON url, jql, (err, results) =>
 			if err
@@ -45,18 +45,15 @@ class JiraHandler
 			unless results.issues?
 				@msg.send "Couldn't find any issues"
 				return
-			issueList = []
 			for issue in results.issues
-				detail = {}
-				@getJSON issue.self, null, (err, details) =>
+				@getJSON issue.self, null, (err, details) ->
 					if err
-						detail = {key: "error", summary: "couldn't get issue details from JIRA"}
+						issueList.push( {key: "error", summary: "couldn't get issue details from JIRA"} )
 						return
 					unless details.key?
-						detail = {key: "error", summary: "didn't get details for an issue"}
+						issueList.push( {key: "error", summary: "didn't get details for an issue"} )
 						return
-					detail = {key: details.key, summary: details.fields.summary.value}
-				issueList.push detail
+					issueList.push( {key: details.key, summary: details.fields.summary.value} )
 			@writeResultsToAdapter @msg, issueList
 			
 	writeResultsToAdapter: (msg, results) ->
@@ -74,4 +71,6 @@ module.exports = (robot) ->
 	
 	robot.respond /jira me(?: issues where)? (.+)$/i, (msg) ->
 		handler = new JiraHandler msg
-		handler.getIssues msg.match[1]
+		issues = []
+		handler.getIssues msg.match[1] issues
+		msg.send "got issues: #{issues.length}"
