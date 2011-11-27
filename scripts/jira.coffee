@@ -51,12 +51,12 @@ class JiraHandler
 			for issue in results.issues
 				@getJSON issue.self, null, (err, details) =>
 					if err
-						@issueList.push( {key: "error", summary: "couldn't get issue details from JIRA"} )
+						@issueList.push {key: "error", summary: "couldn't get issue details from JIRA"}
 						return
 					unless details.key?
-						@issueList.push( {key: "error", summary: "didn't get details for an issue"} )
+						@issueList.push {key: "error", summary: "didn't get details for an issue"}
 						return
-					@issueList.push( {key: details.key, summary: details.fields.summary.value} )
+					@issueList.push {key: details.key, summary: details.fields.summary.value}
 					@msg.send "now there are #{@issueList.length} issues"
 			@writeResultsToAdapter @issueList
 			
