@@ -4,6 +4,9 @@
 # jcm-1145: "a case about things and stuff" - https://blah
 
 class JiraHandler
+	
+	issueList = []
+	
 	constructor: (@msg) ->
 		missing_config_error = "%s setting missing from env config!"
 		unless process.env.HUBOT_JIRA_USER?
@@ -38,13 +41,14 @@ class JiraHandler
 	
 	getIssues: (jql, issueList) ->
 		url = "http://#{@domain}.onjira.com/rest/api/latest/search"
-		@getJSON url, jql, (err, results) =>
+		@getJSON url, jql, (err, results) ->
 			if err
 				@msg.send "error trying to access JIRA"
 				return
 			unless results.issues?
 				@msg.send "Couldn't find any issues"
 				return
+			issueList = []
 			for issue in results.issues
 				@getJSON issue.self, null, (err, details) ->
 					if err
@@ -54,15 +58,14 @@ class JiraHandler
 						issueList.push( {key: "error", summary: "didn't get details for an issue"} )
 						return
 					issueList.push( {key: details.key, summary: details.fields.summary.value} )
-			@writeResultsToAdapter @msg, issueList
+			@writeResultsToAdapter issueList
 			
-	writeResultsToAdapter: (msg, results) ->
-		@msg.send "I've got the instance's msg here"
+	writeResultsToAdapter: (results) ->
 		if results.length > 0 
 			resp = (results.map (i) -> "#{i.key}: #{i.summary}").join("\n")
-			msg.send response
+			@msg.send response
 		else
-			msg.send "No issues found"
+			@msg.send "No issues found"
 			
 module.exports = (robot) ->
 	robot.hear /\b([A-Za-z]{3,5}-[\d]+)/i, (msg) ->
