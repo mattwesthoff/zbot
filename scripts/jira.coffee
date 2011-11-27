@@ -40,6 +40,10 @@ class JiraHandler
 	
 	getIssues: (jql) ->
 		url = "http://#{@domain}.onjira.com/rest/api/latest/search"
+		firstLevelResults = {}
+		@getJSON url, jql (err, results) ->
+			firstLevelResults = results
+		@msg.send firstLevelResults
 		@getJSON url, jql, (err, results) =>
 			if err
 				@msg.send "error trying to access JIRA"
@@ -49,16 +53,15 @@ class JiraHandler
 				return
 			@issueList = []
 			for issue in results.issues
-				do (issue) ->
-					@getJSON issue.self, null, (err, details) =>
-						if err
-							@issueList.push {key: "error", summary: "couldn't get issue details from JIRA"}
-							return
-						unless details.key?
-							@issueList.push {key: "error", summary: "didn't get details for an issue"}
-							return
-						@addResult {key: details.key, summary: details.fields.summary.value}
-						@msg.send "now there are #{@issueList.length} issues"
+				@getJSON issue.self, null, (err, details) =>
+					if err
+						@issueList.push {key: "error", summary: "couldn't get issue details from JIRA"}
+						return
+					unless details.key?
+						@issueList.push {key: "error", summary: "didn't get details for an issue"}
+						return
+					@addResult {key: details.key, summary: details.fields.summary.value}
+					@msg.send "now there are #{@issueList.length} issues"
 			@msg.send "In the function out of for loop, length: #{@issueList.length}"
 			@writeResultsToAdapter @issueList
 			
