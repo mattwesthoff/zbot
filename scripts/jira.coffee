@@ -49,15 +49,16 @@ class JiraHandler
 				return
 			@issueList = []
 			for issue in results.issues
-				@getJSON issue.self, null, (err, details) =>
-					if err
-						@issueList.push {key: "error", summary: "couldn't get issue details from JIRA"}
-						return
-					unless details.key?
-						@issueList.push {key: "error", summary: "didn't get details for an issue"}
-						return
-					@addResult {key: details.key, summary: details.fields.summary.value}
-					@msg.send "now there are #{@issueList.length} issues"
+				do (issue) ->
+					@getJSON issue.self, null, (err, details) =>
+						if err
+							@issueList.push {key: "error", summary: "couldn't get issue details from JIRA"}
+							return
+						unless details.key?
+							@issueList.push {key: "error", summary: "didn't get details for an issue"}
+							return
+						@addResult {key: details.key, summary: details.fields.summary.value}
+						@msg.send "now there are #{@issueList.length} issues"
 			@msg.send "In the function out of for loop, length: #{@issueList.length}"
 			@writeResultsToAdapter @issueList
 			
@@ -65,6 +66,7 @@ class JiraHandler
 		@issueList.push(result)
 		
 	writeResultsToAdapter: (results) ->
+		@msg.send "issueList.length = #{@issueList.length}"
 		if results.length > 0 
 			resp = (results.map (i) -> "#{i.key}: #{i.summary}").join("\n")
 			@msg.send response
