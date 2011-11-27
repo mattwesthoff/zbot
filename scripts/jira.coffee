@@ -46,20 +46,21 @@ class JiraHandler
 			unless results.issues? and results.total isnt 0
 				@msg.send "Couldn't find any issues"
 				return
-			output = []
-			output.push "query:\t#{jql}"
-			count = results.issues.length
+			output = ["query:\t#{jql}"]
 			index = 0
+			count = results.issues.length
 			for issue in results.issues
 				@getJSON issue.self, null, (err, details) =>
 					index++
 					if err
 						output.push "#{issue.key}\tcouldn't get issue details from JIRA"
 					else
-						line = "#{details.key}:\t#{details.fields.assignee.value?.displayName}\t#{details.fields.status?.value?.name}\t'#{details.fields.summary?.value}'"
-						output.push line
+						output.push (@formatIssueSummary details)
 					@msg.send output.join("\n") if index is count
-			
+	
+	formatIssueSummary: (details) ->
+		return "#{details.key}:\t#{details.fields.assignee.value?.displayName}\t#{details.fields.status?.value?.name}\t'#{details.fields.summary?.value}'"
+	
 module.exports = (robot) ->
 	robot.hear /\b([A-Za-z]{3,5}-[\d]+)/i, (msg) ->
 		handler = new JiraHandler msg
