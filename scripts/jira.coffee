@@ -49,19 +49,18 @@ class JiraHandler
 				return
 			###
 			issueList = []
-			issues = results.issues
-			for issue in issues
+			count = results.issues.length
+			index = 0
+			for issue in results.issues
+				index++
 				@getJSON issue.self, null, (err, details) =>
-					###
 					if err
 						issueList.push {key: "error", summary: "couldn't get issue details from JIRA"}
-						return
-					unless details.key?
+					else if not details.key?
 						issueList.push {key: "error", summary: "didn't get details for an issue"}
-						return
-					###
-					issueList.push({key: details.key, summary: details.fields.summary.value})
-			console.log issues
+					else
+						issueList.push({key: details.key, summary: details.fields.summary.value})
+					@msg.send ((issueList.map (i) -> "#{i.key}: #{i.summary}").join("\n")) if index is count
 			
 	writeResultsToAdapter: (results) ->
 		@msg.send "issueList.length = #{@issueList.length}"
