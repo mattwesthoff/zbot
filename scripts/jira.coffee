@@ -49,7 +49,8 @@ class JiraHandler
 				return
 			###
 			issueList = []
-			for issue in results.issues
+			issues = results.issues
+			for issue in issues
 				@getJSON issue.self, null, (err, details) =>
 					###
 					if err
@@ -60,10 +61,7 @@ class JiraHandler
 						return
 					###
 					issueList.push({key: details.key, summary: details.fields.summary.value})
-					console.log issueList
-			console.log "In the function out of for loop"
-			console.log issueList
-		console.log "end of function"
+			console.log issues
 			
 	writeResultsToAdapter: (results) ->
 		@msg.send "issueList.length = #{@issueList.length}"
