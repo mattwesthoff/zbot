@@ -52,8 +52,8 @@ class JiraHandler
 			count = results.issues.length
 			index = 0
 			for issue in results.issues
-				index++
 				@getJSON issue.self, null, (err, details) =>
+					index++
 					if err
 						issueList.push {key: "error", summary: "couldn't get issue details from JIRA"}
 					else if not details.key?
