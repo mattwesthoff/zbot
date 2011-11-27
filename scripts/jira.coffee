@@ -39,7 +39,7 @@ class JiraHandler
 				return
 			@msg.send "#{id}: #{issue.fields.summary.value}"
 	
-	getIssues: (jql, issueList) ->
+	getIssues: (jql) ->
 		url = "http://#{@domain}.onjira.com/rest/api/latest/search"
 		@getJSON url, jql, (err, results) ->
 			if err
@@ -74,6 +74,5 @@ module.exports = (robot) ->
 	
 	robot.respond /jira me(?: issues where)? (.+)$/i, (msg) ->
 		handler = new JiraHandler msg
-		issues = []
-		handler.getIssues msg.match[1], issues
-		msg.send "got issues: #{issues.length}"
+		handler.getIssues msg.match[1]
+		msg.send "got issues: #{issueList.length}"
