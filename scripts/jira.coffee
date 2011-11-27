@@ -58,7 +58,7 @@ class JiraHandler
 						issueList.push( {key: "error", summary: "didn't get details for an issue"} )
 						return
 					issueList.push( {key: details.key, summary: details.fields.summary.value} )
-					msg.send "now there are #{issueList.length} issues"
+					@msg.send "now there are #{issueList.length} issues"
 			@writeResultsToAdapter issueList
 			
 	writeResultsToAdapter: (results) ->
