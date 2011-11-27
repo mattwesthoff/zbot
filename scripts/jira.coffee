@@ -57,7 +57,7 @@ class JiraHandler
 					else
 						output.push (@formatIssueSummary details)
 					@msg.send output.join("\n") if index is count
-	
+
 	formatIssueSummary: (details) ->
 		return "#{details.key}:\t#{details.fields.assignee.value?.displayName}\t#{details.fields.status?.value?.name}\t'#{details.fields.summary?.value}'"
 	
