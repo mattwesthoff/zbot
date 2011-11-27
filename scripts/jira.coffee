@@ -59,9 +59,11 @@ class JiraHandler
 						issueList.push {key: "error", summary: "didn't get details for an issue"}
 						return
 					###
-					issueList.push {key: details.key, summary: details.fields.summary.value}
-			console.log "In the function out of for loop, length: #{issueList.length}"
-		console.log "end of function, #{issueList}"
+					issueList.push({key: details.key, summary: details.fields.summary.value})
+					console.log issueList
+			console.log "In the function out of for loop"
+			console.log issueList
+		console.log "end of function"
 			
 	writeResultsToAdapter: (results) ->
 		@msg.send "issueList.length = #{@issueList.length}"
