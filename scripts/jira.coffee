@@ -41,7 +41,7 @@ class JiraHandler
 	
 	getIssues: (jql) ->
 		url = "http://#{@domain}.onjira.com/rest/api/latest/search"
-		@getJSON url, jql, (err, results) ->
+		@getJSON url, jql, (err, results) =>
 			if err
 				@msg.send "error trying to access JIRA"
 				return
@@ -50,7 +50,7 @@ class JiraHandler
 				return
 			issueList = []
 			for issue in results.issues
-				@getJSON issue.self, null, (err, details) ->
+				@getJSON issue.self, null, (err, details) =>
 					if err
 						issueList.push( {key: "error", summary: "couldn't get issue details from JIRA"} )
 						return
