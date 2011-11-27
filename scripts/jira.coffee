@@ -47,16 +47,16 @@ class JiraHandler
 				@msg.send "Couldn't find any issues"
 				return
 			output = []
-			output.push "query: #{jql}"
+			output.push "query:\t#{jql}"
 			count = results.issues.length
 			index = 0
 			for issue in results.issues
 				@getJSON issue.self, null, (err, details) =>
 					index++
 					if err
-						output.push "#{issue.key}: couldn't get issue details from JIRA"
+						output.push "#{issue.key}\tcouldn't get issue details from JIRA"
 					else
-						line = "#{details.key}: [#{details.fields.assignee.value?.displayName}] #{details.fields.status?.value?.name} '#{details.fields.summary?.value}'"
+						line = "#{details.key}:\t#{details.fields.assignee.value?.displayName}\t#{details.fields.status?.value?.name}\t'#{details.fields.summary?.value}'"
 						output.push line
 					@msg.send output.join("\n") if index is count
 			
