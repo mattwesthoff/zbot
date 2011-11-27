@@ -72,5 +72,5 @@ module.exports = (robot) ->
 	robot.respond /jira me(?: issues where)? (.+)$/i, (msg) ->
 		handler = new JiraHandler msg
 		issues = []
-		handler.getIssues msg.match[1] issues
+		handler.getIssues msg.match[1], issues
 		msg.send "got issues: #{issues.length}"
