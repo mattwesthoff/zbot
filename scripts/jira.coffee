@@ -47,7 +47,7 @@ class JiraHandler
 				return
 			issueList = []
 			for issue in results.issues
-				@getJSON issue.self, null, (err, details) ->
+				@getJSON issue.self, null, (err, details) =>
 					if err
 						issueList.push( {key: "error", summary: "couldn't get issue details from JIRA"} )
 						return
@@ -55,7 +55,7 @@ class JiraHandler
 						issueList.push( {key: "error", summary: "didn't get details for an issue"} )
 						return
 					issueList.push( {key: details.key, summary: details.fields.summary.value} )
-			JiraHandler.writeResultsToAdapter @msg, issueList
+			@writeResultsToAdapter @msg, issueList
 			
 	writeResultsToAdapter: (msg, results) ->
 		@msg.send "I've got the instance's msg here"
