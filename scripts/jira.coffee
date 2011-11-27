@@ -18,7 +18,6 @@ class JiraHandler
 		@password = process.env.HUBOT_JIRA_PASSWORD
 		@domain = process.env.HUBOT_JIRA_DOMAIN
 		@auth = "Basic " + new Buffer(@username + ":" + @password).toString('base64')
-		@issueList = []
 		
 	getJSON: (url, query, callback) ->
 		@msg.http(url)
@@ -40,7 +39,6 @@ class JiraHandler
 	
 	getIssues: (jql) ->
 		url = "http://#{@domain}.onjira.com/rest/api/latest/search"
-		issueResults = {}
 		@getJSON url, jql, (err, results) =>
 			if err
 				@msg.send "error trying to access JIRA"
@@ -48,20 +46,18 @@ class JiraHandler
 			unless results.issues?
 				@msg.send "Couldn't find any issues"
 				return
-			issueResults = results
-			@issueList = []
+			issueList = []
 			for issue in results.issues
 				@getJSON issue.self, null, (err, details) =>
 					if err
-						@issueList.push {key: "error", summary: "couldn't get issue details from JIRA"}
+						issueList.push {key: "error", summary: "couldn't get issue details from JIRA"}
 						return
 					unless details.key?
-						@issueList.push {key: "error", summary: "didn't get details for an issue"}
+						issueList.push {key: "error", summary: "didn't get details for an issue"}
 						return
-					@issueList.push {key: details.key, summary: details.fields.summary.value}
-					console.log @issueList
-			@msg.send "In the function out of for loop, length: #{@issueList.length}"
-		@msg.send issueResults
+					issueList.push {key: details.key, summary: details.fields.summary.value}
+			console.log "In the function out of for loop, length: #{issueList.length}"
+		console.log "end of function, #{issueList}"
 			
 	writeResultsToAdapter: (results) ->
 		@msg.send "issueList.length = #{@issueList.length}"
