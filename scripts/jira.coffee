@@ -47,7 +47,7 @@ class JiraHandler
 				@msg.send "Couldn't find any issues"
 				return
 			issueList = []
-			issueList.push {key: "query", status: jql, assignee: "", status: ""}
+			issueList.push {key: "query", summary: jql, assignee: "", status: ""}
 			count = results.issues.length
 			index = 0
 			for issue in results.issues
@@ -58,8 +58,8 @@ class JiraHandler
 					else
 						issueList.push ({key: details.key,
 						summary: details.fields.summary.value, 
-						assignee: details.fields.assignee.value,
-						status: details.fields.status.value
+						assignee: details.fields.assignee.value.displayName,
+						status: details.fields.status.value.name
 						})
 					@msg.send ((issueList.map (i) -> "#{i.key}: [#{i.assignee}] - #{i.status} - #{i.summary}").join("\n")) if index is count
 			
