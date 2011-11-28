@@ -16,6 +16,8 @@ class HelpspotHandler
 		@auth = "Basic " + new Buffer(@username + ":" + @password).toString('base64')
 		
 	getIssueJson: (caseNum, callback) ->
+		callback(null, {xPersonAssignedTo: "hi", xStatus: "open"})
+		###
 		@msg.http("http://app.zsservices.com/helpspot/api/index.php")
 			.header('Authorization', @auth)
 			.query("method", "private.request.get")
@@ -23,10 +25,10 @@ class HelpspotHandler
 			.query("xRequest", caseNum)
 			.get() (err, res, body) ->
 				callback(err, JSON.parse(body))
+		###
 				
 	getCaseDetails: (caseNum) ->
 		@getIssueJson caseNum, (err, hsCase) =>
-			console.log " got to the callback "
 			@msg.send "assigned to: #{hsCase.xPersonAssignedTo}, status: #{hsCase.xStatus}"
 				
 module.exports = (robot) ->
