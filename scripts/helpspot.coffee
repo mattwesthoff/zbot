@@ -5,6 +5,12 @@
 
 class HelpspotHandler
 	constructor: (@msg) ->
+		missing_config_error = "%s setting missing from env config!"
+		unless process.env.HUBOT_HELPSPOT_USER?
+			@msg.send (missing_config_error % "HUBOT_HELPSPOT_USER")
+		unless process.env.HUBOT_HELPSPOT_PASSWORD?
+			@msg.send (missing_config_error % "HUBOT_HELPSPOT_PASSWORD")
+			
 		@username = process.env.HUBOT_HELPSPOT_USER
 		@password = process.env.HUBOT_HELPSPOT_PASSWORD
 		@auth = "Basic " + new Buffer(@username + ":" + @password).toString('base64')
@@ -12,8 +18,8 @@ class HelpspotHandler
 	getIssueJson: (caseNum, callback) ->
 		@msg.http("http://app.zsservices.com/helpspot/api/index.php")
 			.header('Authorization', @auth)
-			#.query("method", "private.request.get")
-			#.query("output", "json")
+			.query("method", "private.request.get")
+			.query("output", "json")
 			.query("xRequest", caseNum)
 			.get() (err, res, body) ->
 				callback(err, JSON.parse(body))
