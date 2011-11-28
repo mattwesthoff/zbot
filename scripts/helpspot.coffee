@@ -17,9 +17,7 @@ class HelpspotHandler
 		
 	getIssueJson: (caseNum, callback) ->
 		@msg.http("http://google.com").get() (err, res, body) ->
-			console.log "oh yeah"
-		
-		callback(null, {xPersonAssignedTo: "hi", xStatus: "open"})
+			callback(null, {xPersonAssignedTo: "hi", xStatus: "open"})
 		###
 		@msg.http("http://app.zsservices.com/helpspot/api/index.php")
 			.header('Authorization', @auth)
