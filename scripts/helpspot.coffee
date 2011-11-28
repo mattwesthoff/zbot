@@ -8,10 +8,10 @@ class HelpspotHandler
 		@username = process.env.HUBOT_HELPSPOT_USER
 		@password = process.env.HUBOT_HELPSPOT_PASSWORD
 		@auth = "Basic " + new Buffer(@username + ":" + @password).toString('base64')
-	
+		
 	getIssueJson: (query, callback) ->
 		@msg.http("http://app.zsservices.com/helpspot/api/index.php")
-			#.header('Authorization', @auth)
+			.header('Authorization', @auth)
 			#.query(query)
 			.get() (err, res, body) ->
 				callback(err, JSON.parse(body))
