@@ -34,5 +34,4 @@ class HelpspotHandler
 module.exports = (robot) ->
 	robot.hear /\b(?:hs|HS|Hs|Hs)[ ]?[-#]?[ ]?([\d]+)/i, (msg) ->
 		handler = new HelpspotHandler msg
-		msg.send "I heard a hs case #{msg.match[1]}"
-		#handler.getCaseDetails msg.match[1]
+		handler.getCaseDetails msg.match[1]
