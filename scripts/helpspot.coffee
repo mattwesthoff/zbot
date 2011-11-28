@@ -15,9 +15,7 @@ class HelpspotHandler
 			@msg.send "assigned to: #{body.xPersonAssignedTo}, status: #{body.xStatus}"
 		@msg.http(url)
 			.header('Authorization', @auth)
-			.query(method: 'private.request.get')
-			.query(output: "json")
-			.query(xRequest: id)
+			.query({method: 'private.request.get', output: "json", xRequest: id})
 			.get() (err, res, body) ->
 				callback(err, JSON.parse(body))
 				
@@ -25,4 +23,3 @@ module.exports = (robot) ->
 	robot.hear /\b(?:hs|HS|Hs|Hs)[ ]?[-#]?[ ]?([\d]+)/i, (msg) ->
 		handler = new HelpspotHandler msg
 		handler.getCaseDetails msg.match[1]
-		
