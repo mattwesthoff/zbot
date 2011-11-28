@@ -9,15 +9,17 @@ class HelpspotHandler
 		@password = process.env.HUBOT_HELPSPOT_PASSWORD
 		@auth = "Basic " + new Buffer(@username + ":" + @password).toString('base64')
 	
-	getCaseDetails: (id) ->
+	getIssueJson: (query, callback) ->
 		url = "http://app.zsservices.com/helpspot/api/index.php"
-		callback = (err, body) ->
-			@msg.send "assigned to: #{body.xPersonAssignedTo}, status: #{body.xStatus}"
 		@msg.http(url)
 			.header('Authorization', @auth)
-			.query({method: 'private.request.get', output: "json", xRequest: id})
+			.query(query)
 			.get() (err, res, body) ->
 				callback(err, JSON.parse(body))
+				
+	getCaseDetails: (id) ->
+		@getIssueJson {method: 'private.request.get', output: "json", xRequest: id}, (err, hsCase) ->
+			@msg.send "assigned to: #{hsCase.xPersonAssignedTo}, status: #{hsCase.xStatus}"
 				
 module.exports = (robot) ->
 	robot.hear /\b(?:hs|HS|Hs|Hs)[ ]?[-#]?[ ]?([\d]+)/i, (msg) ->
