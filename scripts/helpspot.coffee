@@ -22,7 +22,7 @@ class HelpspotHandler
 			.query("output", "json")
 			.query("xRequest", caseNum)
 			.get() (err, res, body) ->
-				callback(null, {xPersonAssignedTo: "hi", xStatus: "open"})
+				callback(err, JSON.parse(body))
 		###
 		@msg.http("http://app.zsservices.com/helpdesk/api/index.php")
 			.header('Authorization', @auth)
