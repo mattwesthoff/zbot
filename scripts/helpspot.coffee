@@ -16,8 +16,8 @@ class HelpspotHandler
 		@msg.http(url)
 			.header('Authorization', @auth)
 			.query(method: 'private.request.get')
+			.query(output: "json")
 			.query(xRequest: id)
-			.query(output: json)
 			.get() (err, res, body) ->
 				callback(err, JSON.parse(body))
 				
