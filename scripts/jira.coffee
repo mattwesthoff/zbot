@@ -62,7 +62,7 @@ class JiraHandler
 		return "#{details.key}:\t#{details.fields.assignee.value?.displayName}\t#{details.fields.status?.value?.name}\t'#{details.fields.summary?.value}'"
 	
 module.exports = (robot) ->
-	robot.hear /\b([A-Za-z]{3,5}-[\d]+)/i, (msg) ->
+	robot.hear /\b([A-Za-z]{3,}-[\d]+)/i, (msg) ->
 		handler = new JiraHandler msg
 		handler.getIssue msg.match[1]
 	
