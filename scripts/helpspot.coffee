@@ -18,6 +18,9 @@ class HelpspotHandler
 	getIssueJson: (caseNum, callback) ->
 		@msg.http("http://app.zsservices.com/helpdesk/api/index.php")
 			.header("Authorization", @auth)
+			.query("method", "private.request.get")
+			.query("output", "json")
+			.query("xRequest", caseNum)
 			.get() (err, res, body) ->
 				callback(null, {xPersonAssignedTo: "hi", xStatus: "open"})
 		###
