@@ -1,7 +1,7 @@
 # grab cases from JIRA when people mention them
 #
-# "blah blah jcm-1145 "
-# jcm-1145: "a case about things and stuff" - https://blah
+# "... jcm-1145 ... "    - Reports details about any case mentioned in the chat
+# jira me (jql)   - Runs JQL query against jira and returns the results
 
 class JiraHandler
 	

@@ -3,7 +3,7 @@
 # learn me <term>    - Queries DuckDuckGo's api to define the term
 
 module.exports = (robot) ->
-  robot.respond /learn me(?: a)? (.+)/i, (res) ->
+  robot.respond /learn me(?: a)? (.+)$/i, (res) ->
     abstract_url = "http://api.duckduckgo.com/?format=json&q=#{encodeURIComponent(res.match[2])}"
     res.http(abstract_url)
       .header('User-Agent', 'Hubot Abstract Script')
