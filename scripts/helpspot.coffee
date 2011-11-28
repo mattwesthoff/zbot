@@ -26,7 +26,7 @@ class HelpspotHandler
 				console.log res if res?
 				console.log body if body?
 				console.log "no body!" unless body?
-				#callback(err, JSON.parse(body))
+				callback(err, JSON.parse(body))
 		###
 		@msg.http("http://app.zsservices.com/helpdesk/api/index.php")
 			.header('Authorization', @auth)
