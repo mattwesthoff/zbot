@@ -16,7 +16,7 @@ class HelpspotHandler
 		@auth = "Basic " + new Buffer(@username + ":" + @password).toString('base64')
 		
 	getIssueJson: (caseNum, callback) ->
-		@msg.http("http://app.zsservices.com/helpdesk/api/index.php")
+		@msg.http("https://app.zsservices.com/helpdesk/api/index.php")
 			.header("Authorization", @auth)
 			.query("method", "private.request.get")
 			.query("output", "json")
