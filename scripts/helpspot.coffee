@@ -16,6 +16,9 @@ class HelpspotHandler
 		@auth = "Basic " + new Buffer(@username + ":" + @password).toString('base64')
 		
 	getIssueJson: (caseNum, callback) ->
+		@msg.http("http://google.com").get() (err, res, body) ->
+			console.log "oh yeah"
+		
 		callback(null, {xPersonAssignedTo: "hi", xStatus: "open"})
 		###
 		@msg.http("http://app.zsservices.com/helpspot/api/index.php")
