@@ -10,15 +10,15 @@ class HelpspotHandler
 		@auth = "Basic " + new Buffer(@username + ":" + @password).toString('base64')
 	
 	getIssueJson: (query, callback) ->
-		url = "http://app.zsservices.com/helpspot/api/index.php"
-		@msg.http(url)
+		console.log "no auth" unless @auth?
+		@msg.http("http://app.zsservices.com/helpspot/api/index.php")
 			.header('Authorization', @auth)
 			.query(query)
 			.get() (err, res, body) ->
 				callback(err, JSON.parse(body))
 				
 	getCaseDetails: (id) ->
-		@getIssueJson {method: 'private.request.get', output: "json", xRequest: id}, (err, hsCase) ->
+		@getIssueJson {method: "private.request.get", output: "json", xRequest: id}, (err, hsCase) ->
 			@msg.send "assigned to: #{hsCase.xPersonAssignedTo}, status: #{hsCase.xStatus}"
 				
 module.exports = (robot) ->
