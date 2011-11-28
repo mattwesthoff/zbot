@@ -14,4 +14,4 @@ module.exports = (robot) ->
 		data.timelogs.push (new Date()).getTime()
 		
 	robot.respond /list times/i, (msg) ->
-		msg.send timelogs
+		msg.send data.timelogs
