@@ -9,17 +9,17 @@ class HelpspotHandler
 		@password = process.env.HUBOT_HELPSPOT_PASSWORD
 		@auth = "Basic " + new Buffer(@username + ":" + @password).toString('base64')
 		
-	getIssueJson: (id, callback) ->
+	getIssueJson: (caseNum, callback) ->
 		@msg.http("http://app.zsservices.com/helpspot/api/index.php")
 			.header('Authorization', @auth)
 			#.query("method", "private.request.get")
 			#.query("output", "json")
-			#.query("xRequest", id)
+			.query("xRequest", caseNum)
 			.get() (err, res, body) ->
 				callback(err, JSON.parse(body))
 				
-	getCaseDetails: (id) ->
-		@getIssueJson id, (err, hsCase) ->
+	getCaseDetails: (caseNum) ->
+		@getIssueJson caseNum, (err, hsCase) =>
 			console.log " got to the callback "
 			@msg.send "assigned to: #{hsCase.xPersonAssignedTo}, status: #{hsCase.xStatus}"
 				
