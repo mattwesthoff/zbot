@@ -10,10 +10,9 @@ class HelpspotHandler
 		@auth = "Basic " + new Buffer(@username + ":" + @password).toString('base64')
 	
 	getIssueJson: (query, callback) ->
-		console.log "no auth" unless @auth?
 		@msg.http("http://app.zsservices.com/helpspot/api/index.php")
-			.header('Authorization', @auth)
-			.query(query)
+			#.header('Authorization', @auth)
+			#.query(query)
 			.get() (err, res, body) ->
 				callback(err, JSON.parse(body))
 				
