@@ -22,24 +22,14 @@ class HelpspotHandler
 			.query("output", "json")
 			.query("xRequest", caseNum)
 			.get() (err, res, body) ->
-				console.log err if err?
-				console.log res if res?
-				console.log body if body?
-				console.log "no body!" unless body?
 				callback(err, JSON.parse(body))
-		###
-		@msg.http("http://app.zsservices.com/helpdesk/api/index.php")
-			.header('Authorization', @auth)
-			.query("method", "private.request.get")
-			.query("output", "json")
-			.query("xRequest", caseNum)
-			.get() (err, res, body) ->
-				callback(err, JSON.parse(body))
-		###
 				
 	getCaseDetails: (caseNum) ->
 		@getIssueJson caseNum, (err, hsCase) =>
-			@msg.send "assigned to: #{hsCase.xPersonAssignedTo}, status: #{hsCase.xStatus}"
+			if err
+				@msg.send "error trying to access helpspot"
+				return
+			@msg.send "HS #{caseNum}: Assigned to: #{hsCase.xPersonAssignedTo}, Status: #{hsCase.xStatus}, Link: https://app.zsservices.com/helpdesk/admin.php?pg=request&reqid=#{caseNum}"
 				
 module.exports = (robot) ->
 	robot.hear /\b(?:hs|HS|Hs|Hs)[ ]?[-#]?[ ]?([\d]+)/i, (msg) ->
