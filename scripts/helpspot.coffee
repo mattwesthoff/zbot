@@ -10,7 +10,7 @@ class HelpspotHandler
 		@auth = "Basic " + new Buffer(@username + ":" + @password).toString('base64')
 		console.log "creating HelpspotHandler"
 		
-	getIssueJson: (callback) ->
+	getIssueJson: (id, callback) ->
 		console.log " calling getIssueJson "
 		@msg.http("http://app.zsservices.com/helpspot/api/index.php")
 			.header('Authorization', @auth)
@@ -21,7 +21,7 @@ class HelpspotHandler
 				callback(err, JSON.parse(body))
 				
 	getCaseDetails: (id) ->
-		@getIssueJson (err, hsCase) ->
+		@getIssueJson id, (err, hsCase) ->
 			console.log " got to the callback "
 			@msg.send "assigned to: #{hsCase.xPersonAssignedTo}, status: #{hsCase.xStatus}"
 				
