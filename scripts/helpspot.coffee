@@ -22,9 +22,10 @@ class HelpspotHandler
 			.query("output", "json")
 			.query("xRequest", caseNum)
 			.get() (err, res, body) ->
-				console.log err
-				console.log res
-				console.log body
+				console.log err if err?
+				console.log res if res?
+				console.log body if body?
+				console.log "no body!" unless body?
 				#callback(err, JSON.parse(body))
 		###
 		@msg.http("http://app.zsservices.com/helpdesk/api/index.php")
