@@ -29,7 +29,7 @@ class HelpspotHandler
 			if err
 				@msg.send "error trying to access helpspot"
 				return
-			@msg.send "HS #{caseNum}: Assigned to: #{hsCase.xPersonAssignedTo}, Status: #{hsCase.xStatus}, Link: https://app.zsservices.com/helpdesk/admin.php?pg=request&reqid=#{caseNum}"
+			@msg.send "HS #{caseNum}: Opened by: #{hsCase.sEmail}, Status: #{hsCase.xStatus}, Link: https://app.zsservices.com/helpdesk/admin.php?pg=request&reqid=#{caseNum}"
 				
 module.exports = (robot) ->
 	robot.hear /\b(?:hs|HS|Hs|Hs)[ ]?[-#]?[ ]?([\d]+)/i, (msg) ->

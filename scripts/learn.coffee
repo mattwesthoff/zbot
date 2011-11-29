@@ -5,7 +5,7 @@
 module.exports = (robot) ->
 	robot.respond /learn me(?: a)? (.+)$/i, (res) ->
 		abstract_url = "http://api.duckduckgo.com/?format=json&q=#{encodeURIComponent(res.match[2])}"
-		res.http(abstract_url).header('User-Agent', 'Hubot Abstract Script').get() (err, _, body) ->
+		res.http(abstract_url).header('User-Agent', 'hubot.zbot').get() (err, res, body) ->
 			res.send "Couldn't access ddg api." if err
 			data = JSON.parse(body.toString("utf8"))
 			unless data?
