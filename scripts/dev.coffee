@@ -8,7 +8,7 @@ module.exports = (robot) ->
 	data.timelogs = []
 	
 	robot.respond /where do you live/i, (msg) ->
-		msg.send "I live at https://github.com/mattoraptor/zbot"
+		msg.send "I live at git@github.com:ZS/zbot.git"
 		
 	robot.respond /record time/i, (msg) ->
 		data.timelogs.push (new Date()).getTime()
