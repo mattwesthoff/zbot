@@ -1,7 +1,9 @@
 # A way to interact with the Google Images API.
 #
 # image me <query>    - The Original. Queries Google Images for <query> and
-#                       returns a random top result.
+#                       returns a the top result.
+# random image me <query>  - Same as `image me`, except returns a random 
+                              result
 # animate me <query>  - The same thing as `image me`, except adds a few
 #                       parameters to try to return an animated GIF instead.
 # mustache me <url>   - Adds a mustache to the specified URL.
