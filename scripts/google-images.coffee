@@ -8,12 +8,17 @@
 # mustache me <query> - Searches Google Images for the specified query and
 #                       mustaches it.
 module.exports = (robot) ->
+
+  robot.respond /random (image|img)( me)? (.*)/i, (msg) ->
+    imageMe msg, msg.match[3], true, (url) ->
+      msg.send url
+
   robot.respond /(image|img)( me)? (.*)/i, (msg) ->
-    imageMe msg, msg.match[3], (url) ->
+    imageMe msg, msg.match[3], false, (url) ->
       msg.send url
 
   robot.respond /animate me (.*)/i, (msg) ->
-    imageMe msg, "animated #{msg.match[1]}", (url) ->
+    imageMe msg, "animated #{msg.match[1]}", false, (url) ->
       msg.send url
 
   robot.respond /(?:mo?u)?sta(?:s|c)he?(?: me)? (.*)/i, (msg) ->
@@ -22,17 +27,20 @@ module.exports = (robot) ->
     if imagery.match /^https?:\/\//i
       msg.send "#{mustachify}#{imagery}"
     else
-      imageMe msg, imagery, (url) ->
+      imageMe msg, imagery, true, (url) ->
         msg.send "#{mustachify}#{url}"
 
 mustachify = "http://mustachify.me/?src="
 
-imageMe = (msg, query, cb) ->
+imageMe = (msg, query, random, cb) ->
   msg.http('http://ajax.googleapis.com/ajax/services/search/images')
     .query(v: "1.0", rsz: '8', q: query, safe: "active")
     .get() (err, res, body) ->
       images = JSON.parse(body)
       images = images.responseData.results
-      image  = msg.random images
+      if (random)
+        image  = msg.random images
+      else
+        image = images[0]
       cb "#{image.unescapedUrl}#.png"
 
