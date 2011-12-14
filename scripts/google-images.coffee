@@ -1,14 +1,10 @@
 # A way to interact with the Google Images API.
 #
-# image me <query>    - The Original. Queries Google Images for <query> and
-#                       returns a the top result.
-# random image me <query>  - Same as `image me`, except returns a random 
-#                            image from the results
-# animate me <query>  - The same thing as `image me`, except adds a few
-#                       parameters to try to return an animated GIF instead.
+# image me <query>    - The Original. Queries Google Images for <query> and returns a the top result.
+# random image me <query>  - Same as `image me`, except returns a random image from the results
+# animate me <query>  - The same thing as `image me`, except adds a few parameters to try to return an animated GIF instead.
 # mustache me <url>   - Adds a mustache to the specified URL.
-# mustache me <query> - Searches Google Images for the specified query and
-#                       mustaches it.
+# mustache me <query> - Searches Google Images for the specified query and mustaches it.
 module.exports = (robot) ->
 
   robot.respond /random (image|img)( me)? (.*)/i, (msg) ->
