@@ -1,1 +1,13 @@
-["shipit.coffee","dice.coffee","adult.coffee","location-decision-maker.coffee","weather.coffee","coderwall.coffee"]
+[
+    "shipit.coffee",
+    "dice.coffee",
+    "adult.coffee",
+    "location-decision-maker.coffee",
+    "weather.coffee",
+    "coderwall.coffee",
+    "alot.coffee",
+    "ascii.coffee",
+    "dealwithit.coffee",
+    "mtg.coffee",
+    "dialectizer.coffee"
+]
