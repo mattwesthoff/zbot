@@ -9,5 +9,9 @@
     "ascii.coffee",
     "dealwithit.coffee",
     "mtg.coffee",
-    "dialectizer.coffee"
+    "dialectizer.coffee",
+    "abstract.coffee",
+    "put-it-back.coffee",
+    "ruby.coffee",
+    "uptime.coffee"
 ]
