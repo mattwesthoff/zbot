@@ -23,7 +23,7 @@ class JiraHandler
 		@msg.http(url)
 			.header('Authorization', @auth)
 			.query(jql: query)
-			.get() (err, res, body) ->
+			.get() (err, res, body) =>
 				@msg.send "got a response: #{body}"
 				return
 				callback(err, JSON.parse(body))
