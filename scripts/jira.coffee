@@ -25,7 +25,7 @@ class JiraHandler
 			.query(jql: query)
 			.get() (err, res, body) ->
 				callback(err, JSON.parse(body))
-	
+
 	getIssue: (id) ->
 		url = "http://#{@domain}.atlassian.net/rest/api/latest/issue/#{id.toUpperCase()}"
 		@getJSON url, null, (err, issue) =>
@@ -36,7 +36,7 @@ class JiraHandler
 				@msg.send "Couldn't find the JIRA issue #{id}"
 				return
 			@msg.send "#{id}: #{issue.fields.summary.value}"
-	
+
 	getIssues: (jql) ->
 		url = "http://#{@domain}.atlassian.net/rest/api/latest/search"
 		@getJSON url, jql, (err, results) =>
