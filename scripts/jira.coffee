@@ -29,7 +29,7 @@ class JiraHandler
 				callback(err, JSON.parse(body))
 
 	getIssue: (id) ->
-		url = "http://#{@domain}.atlassian.net/rest/api/latest/issue/#{id.toUpperCase()}"
+		url = "https://#{@domain}.atlassian.net/rest/api/latest/issue/#{id.toUpperCase()}"
 		@getJSON url, null, (err, issue) =>
 			if err
 				@msg.send "error trying to access JIRA"
@@ -40,7 +40,7 @@ class JiraHandler
 			@msg.send "#{id}: #{issue.fields.summary.value}"
 
 	getIssues: (jql) ->
-		url = "http://#{@domain}.atlassian.net/rest/api/latest/search"
+		url = "https://#{@domain}.atlassian.net/rest/api/latest/search"
 		@getJSON url, jql, (err, results) =>
 			if err
 				@msg.send "error trying to access JIRA"
