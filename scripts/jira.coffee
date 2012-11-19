@@ -25,8 +25,8 @@ class JiraHandler
 			.query(jql: query)
 			.get() (err, res, body) =>
 				try 
-					body = JSON.parse(body)
-					callback(err, body)
+					data = JSON.parse(body)
+					callback(err, data)
 				catch error
 					@msg.send "got an error trying to call JIRA svc\nerror: #{error}\nresponse: #{body}"
 
