@@ -24,9 +24,11 @@ class JiraHandler
 			.header('Authorization', @auth)
 			.query(jql: query)
 			.get() (err, res, body) =>
-				@msg.send "got a response: #{body}"
-				return
-				callback(err, JSON.parse(body))
+				try 
+					body = JSON.parse(body)
+					callback(err, body)
+				catch error
+					@msg.send "got an error trying to call JIRA svc\nerror: #{error}\nresponse: #{body}"
 
 	getIssue: (id) ->
 		url = "https://#{@domain}.atlassian.net/rest/api/latest/issue/#{id.toUpperCase()}"
