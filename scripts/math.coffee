@@ -1,7 +1,9 @@
-# Allows Hubot to do mathematics.
+# Description:
+#   Allows Hubot to do mathematics.
 #
-# math me <expression> - Calculate the given expression.
-# convert me <expression> to <units> - Convert expression to given units.
+# Commands:
+#   hubot math me <expression> - Calculate the given expression.
+#   hubot convert me <expression> to <units> - Convert expression to given units.
 module.exports = (robot) ->
   robot.respond /(calc|calculate|convert|math)( me)? (.*)/i, (msg) ->
     msg
@@ -17,3 +19,4 @@ module.exports = (robot) ->
         # Response includes non-string keys, so we can't use JSON.parse here.
         json = eval("(#{body})")
         msg.send json.rhs || 'Could not compute.'
+
