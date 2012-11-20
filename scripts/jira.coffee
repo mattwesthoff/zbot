@@ -39,7 +39,7 @@ class JiraHandler
 			unless issue.fields?
 				@msg.send "Couldn't find the JIRA issue #{id}"
 				return
-			@msg.send "#{id}: #{issue.fields.summary} - #{issue.fields.summary.value}"
+			@msg.send "#{id}: #{issue.fields.summary}"
 
 	getIssues: (jql) ->
 		url = "https://#{@domain}.atlassian.net/rest/api/latest/search"
