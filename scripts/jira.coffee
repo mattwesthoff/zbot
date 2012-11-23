@@ -1,7 +1,9 @@
-# grab cases from JIRA when people mention them
+# Description:
+#   grab cases from JIRA when people mention thems
 #
-# "... jcm-1145 ... "    - Reports details about any case mentioned in the chat
-# jira me (jql)   - Runs JQL query against jira and returns the results
+# Commands:
+#   "... jcm-1145 ..." - Reports details about any case mentioned in the chat
+#   hubot jira me <jql> - Run JQL query against jira and returns the results
 
 class JiraHandler
 	
