@@ -32,7 +32,7 @@ class JiraHandler
 				catch error
 					@msg.send "got an error trying to call JIRA svc\nerror: #{error}\nresponse: #{body}"
 
-	getIssue: (id) ->
+	getIssue: (id, msg_text) ->
 		url = "https://#{@domain}.atlassian.net/rest/api/latest/issue/#{id.toUpperCase()}"
 		@getJSON url, null, (err, issue) =>
 			if err
@@ -68,9 +68,9 @@ class JiraHandler
 		return "#{details.key}:\t#{details.fields.assignee.value?.displayName}\t#{details.fields.status?.value?.name}\t'#{details.fields.summary?.value}'"
 	
 module.exports = (robot) ->
-	robot.hear /\b([A-Za-z]{3,}-[\d]+)/i, (msg) ->
+	robot.hear /^(.*)\b([A-Za-z]{3,}-[\d]+)/i, (msg) ->
 		handler = new JiraHandler msg
-		handler.getIssue msg.match[1]
+		handler.getIssue msg.match[2] msg.match[1]
 	
 	robot.respond /jira me(?: issues where)? (.+)$/i, (msg) ->
 		handler = new JiraHandler msg
